@@ -1,49 +1,81 @@
-let startTime = null;
-let durations = JSON.parse(localStorage.getItem("durations") || "[]");
+const sections = [
+  { id: "morningGo", label: "朝の行き" },
+  { id: "noonBack", label: "昼の帰り" },
+  { id: "noonGo", label: "昼の行き" },
+  { id: "eveningBack", label: "授業後の帰り" }
+];
 
-function startTimer() {
-  startTime = new Date();
-  alert("出発時間を記録しました: " + startTime.toLocaleTimeString());
+let timers = {};
+let durations = JSON.parse(localStorage.getItem("durations")) || {};
+
+function saveDurations() {
+  localStorage.setItem("durations", JSON.stringify(durations));
 }
 
-function stopTimer() {
-  if (!startTime) {
-    alert("先に『家を出発』ボタンを押してください。");
+function formatDuration(sec) {
+  const minutes = Math.floor(sec / 60);
+  const seconds = sec % 60;
+  return `${minutes}分${seconds}秒`;
+}
+
+function startTimer(id) {
+  timers[id] = new Date();
+  alert(`${sections.find(s => s.id === id).label}：出発を記録しました`);
+}
+
+function stopTimer(id) {
+  if (!timers[id]) {
+    alert("出発していません！");
     return;
   }
+  const end = new Date();
+  const diffSec = Math.round((end - timers[id]) / 1000);
+  timers[id] = null;
 
-  const endTime = new Date();
-  const diffMs = endTime - startTime;
-  const diffMin = Math.round(diffMs / 60000); // 分単位
-  durations.push(diffMin);
-  localStorage.setItem("durations", JSON.stringify(durations));
-  startTime = null;
-
-  alert("到着時間を記録しました: " + endTime.toLocaleTimeString() + "\n所要時間: " + diffMin + " 分");
+  if (!durations[id]) durations[id] = [];
+  durations[id].push(diffSec);
+  saveDurations();
+  alert(`到着しました：${formatDuration(diffSec)}かかりました`);
   updateDisplay();
 }
 
-function updateDisplay() {
-  const recordList = document.getElementById("recordList");
-  recordList.innerHTML = "";
-  durations.forEach((min, i) => {
-    const li = document.createElement("li");
-    li.textContent = `${i + 1}回目: ${min} 分`;
-    recordList.appendChild(li);
-  });
-  function resetRecords() {
-  if (confirm("すべての記録を削除します。よろしいですか？")) {
-    durations = [];
-    localStorage.removeItem("durations");
+function resetAll() {
+  if (confirm("すべての記録を削除しますか？")) {
+    durations = {};
+    saveDurations();
     updateDisplay();
-    alert("記録をリセットしました。");
   }
 }
 
-  const total = durations.reduce((a, b) => a + b, 0);
-  const average = durations.length > 0 ? (total / durations.length).toFixed(1) : "--";
-  document.getElementById("average").textContent = `${average} 分`;
+function updateDisplay() {
+  const app = document.getElementById("app");
+  app.innerHTML = "";
+  sections.forEach(sec => {
+    const div = document.createElement("div");
+    div.className = "section";
+
+    const records = durations[sec.id] || [];
+    const avg =
+      records.length > 0
+        ? Math.round(records.reduce((a, b) => a + b, 0) / records.length)
+        : null;
+
+    div.innerHTML = `
+      <h2>${sec.label}</h2>
+      <button onclick="startTimer('${sec.id}')">出発</button>
+      <button onclick="stopTimer('${sec.id}')">到着</button>
+      <div class="average">
+        平均時間: ${avg !== null ? formatDuration(avg) : "--"}
+      </div>
+      <ul>
+        ${records
+          .map((s, i) => `<li>${i + 1}回目：${formatDuration(s)}</li>`)
+          .join("")}
+      </ul>
+    `;
+
+    app.appendChild(div);
+  });
 }
 
-// 初期表示
 updateDisplay();
