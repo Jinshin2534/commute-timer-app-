@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>通学時間記録アプリ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>通学時間記録アプリ</h1>
+
+  <div class="buttons">
+    <button onclick="startTimer()">家を出発</button>
+    <button onclick="stopTimer()">学校に到着</button>
+  </div>
+
+  <div class="record">
+    <h3>記録:</h3>
+    <ul id="recordList"></ul>
+  </div>
+
+  <div class="average">
+    <h3>平均時間:</h3>
+    <p id="average">--</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
