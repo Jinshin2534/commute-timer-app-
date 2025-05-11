@@ -1,27 +1,38 @@
 body {
   font-family: 'Arial', sans-serif;
   background-color: #eef6fa;
-  padding: 20px;
+  padding: 10px;
   text-align: center;
+  overflow-x: hidden;
 }
 
 h1 {
   color: #2c3e50;
-  margin-bottom: 20px;
+}
+
+.slider-container {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.3s ease;
+  width: 400%; /* 4画面分 */
+}
+
+.slide {
+  flex: 0 0 100%;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .section {
   background-color: #ffffff;
   border-radius: 12px;
   padding: 15px;
-  margin-bottom: 20px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-h2 {
-  margin-bottom: 10px;
-  font-size: 20px;
-  color: #2980b9;
 }
 
 button {
@@ -39,15 +50,14 @@ button:hover {
   background-color: #2980b9;
 }
 
+.reset {
+  background-color: #e74c3c;
+  margin-top: 20px;
+}
+
 ul {
   list-style: none;
   padding: 0;
-}
-
-.reset {
-  margin-top: 20px;
-  font-size: 14px;
-  background-color: #e74c3c;
 }
 
 .average {
