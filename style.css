@@ -1,22 +1,37 @@
 body {
-  font-family: sans-serif;
+  font-family: 'Arial', sans-serif;
+  background-color: #eef6fa;
   padding: 20px;
-  background: #f0f8ff;
   text-align: center;
 }
 
 h1 {
   color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.section {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #2980b9;
 }
 
 button {
-  padding: 12px 24px;
-  margin: 10px;
-  font-size: 18px;
+  padding: 10px 20px;
+  margin: 8px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   background-color: #3498db;
   color: white;
+  font-size: 16px;
   cursor: pointer;
 }
 
@@ -24,11 +39,18 @@ button:hover {
   background-color: #2980b9;
 }
 
-.record, .average {
-  margin-top: 20px;
-}
-
 ul {
   list-style: none;
   padding: 0;
+}
+
+.reset {
+  margin-top: 20px;
+  font-size: 14px;
+  background-color: #e74c3c;
+}
+
+.average {
+  font-weight: bold;
+  margin-top: 10px;
 }
