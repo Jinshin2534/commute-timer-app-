@@ -7,35 +7,9 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>通学時間記録</h1>
-
-  <div id="sections">
-    <!-- 4つの通学区間 -->
-    <div class="section" id="morningGo">
-      <h2>朝の行き</h2>
-      <button onclick="startTimer('morningGo')">出発</button>
-      <button onclick="stopTimer('morningGo')">到着</button>
-      <ul class="recordList"></ul>
-      <p>平均: <span class="average">--</span> 分</p>
-    </div>
-
-    <div class="section" id="noonBack">
-      <h2>昼の帰り</h2>
-      <button onclick="startTimer('noonBack')">出発</button>
-      <button onclick="stopTimer('noonBack')">到着</button>
-      <ul class="recordList"></ul>
-      <p>平均: <span class="average">--</span> 分</p>
-    </div>
-
-    <div class="section" id="noonGo">
-      <h2>昼の行き</h2>
-      <button onclick="startTimer('noonGo')">出発</button>
-      <button onclick="stopTimer('noonGo')">到着</button>
-      <ul class="recordList"></ul>
-      <p>平均: <span class="average">--</span> 分</p>
-    </div>
-
-    <div class="section" id="eveningBack">
-      <h2>授業後の帰り</h2>
-      <button onclick="startTimer('eveningBack')">出発</button>
-      <
+  <h1>通学時間記録アプリ</h1>
+  <div id="app"></div>
+  <button onclick="resetAll()">すべての記録をリセット</button>
+  <script src="script.js"></script>
+</body>
+</html>
