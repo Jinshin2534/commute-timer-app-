@@ -13,9 +13,9 @@ function saveDurations() {
 }
 
 function formatDuration(sec) {
-  const minutes = Math.floor(sec / 60);
-  const seconds = sec % 60;
-  return `${minutes}分${seconds}秒`;
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m}分${s}秒`;
 }
 
 function startTimer(id) {
@@ -28,6 +28,7 @@ function stopTimer(id) {
     alert("出発していません！");
     return;
   }
+
   const end = new Date();
   const diffSec = Math.round((end - timers[id]) / 1000);
   timers[id] = null;
@@ -35,12 +36,12 @@ function stopTimer(id) {
   if (!durations[id]) durations[id] = [];
   durations[id].push(diffSec);
   saveDurations();
-  alert(`到着しました：${formatDuration(diffSec)}かかりました`);
+  alert(`到着しました：${formatDuration(diffSec)}`);
   updateDisplay();
 }
 
 function resetAll() {
-  if (confirm("すべての記録を削除しますか？")) {
+  if (confirm("記録をすべて削除しますか？")) {
     durations = {};
     saveDurations();
     updateDisplay();
@@ -48,34 +49,51 @@ function resetAll() {
 }
 
 function updateDisplay() {
-  const app = document.getElementById("app");
-  app.innerHTML = "";
+  const slider = document.getElementById("slider");
+  slider.innerHTML = "";
   sections.forEach(sec => {
-    const div = document.createElement("div");
-    div.className = "section";
-
     const records = durations[sec.id] || [];
-    const avg =
-      records.length > 0
-        ? Math.round(records.reduce((a, b) => a + b, 0) / records.length)
-        : null;
+    const avg = records.length > 0
+      ? Math.round(records.reduce((a, b) => a + b, 0) / records.length)
+      : null;
 
-    div.innerHTML = `
-      <h2>${sec.label}</h2>
-      <button onclick="startTimer('${sec.id}')">出発</button>
-      <button onclick="stopTimer('${sec.id}')">到着</button>
-      <div class="average">
-        平均時間: ${avg !== null ? formatDuration(avg) : "--"}
+    const slide = document.createElement("div");
+    slide.className = "slide";
+    slide.innerHTML = `
+      <div class="section">
+        <h2>${sec.label}</h2>
+        <button onclick="startTimer('${sec.id}')">出発</button>
+        <button onclick="stopTimer('${sec.id}')">到着</button>
+        <div class="average">平均時間: ${avg !== null ? formatDuration(avg) : "--"}</div>
+        <ul>
+          ${records.map((r, i) => `<li>${i + 1}回目: ${formatDuration(r)}</li>`).join("")}
+        </ul>
       </div>
-      <ul>
-        ${records
-          .map((s, i) => `<li>${i + 1}回目：${formatDuration(s)}</li>`)
-          .join("")}
-      </ul>
     `;
-
-    app.appendChild(div);
+    slider.appendChild(slide);
   });
 }
+
+// スワイプ処理
+let startX = 0;
+let currentIndex = 0;
+
+const slider = document.getElementById("sliderContainer");
+slider.addEventListener("touchstart", e => {
+  startX = e.touches[0].clientX;
+});
+
+slider.addEventListener("touchend", e => {
+  const endX = e.changedTouches[0].clientX;
+  const diff = endX - startX;
+  if (Math.abs(diff) > 50) {
+    if (diff < 0 && currentIndex < sections.length - 1) {
+      currentIndex++;
+    } else if (diff > 0 && currentIndex > 0) {
+      currentIndex--;
+    }
+    document.getElementById("slider").style.transform = `translateX(-${currentIndex * 100}%)`;
+  }
+});
 
 updateDisplay();
