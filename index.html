@@ -7,9 +7,15 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>通学時間記録アプリ</h1>
-  <div id="app"></div>
-  <button onclick="resetAll()">すべての記録をリセット</button>
+  <h1>通学時間記録</h1>
+
+  <div class="slider-container" id="sliderContainer">
+    <div class="slider" id="slider">
+      <!-- スライドが script.js でここに挿入される -->
+    </div>
+  </div>
+
+  <button class="reset" onclick="resetAll()">すべての記録をリセット</button>
   <script src="script.js"></script>
 </body>
 </html>
