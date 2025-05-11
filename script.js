@@ -31,6 +31,14 @@ function updateDisplay() {
     li.textContent = `${i + 1}回目: ${min} 分`;
     recordList.appendChild(li);
   });
+  function resetRecords() {
+  if (confirm("すべての記録を削除します。よろしいですか？")) {
+    durations = [];
+    localStorage.removeItem("durations");
+    updateDisplay();
+    alert("記録をリセットしました。");
+  }
+}
 
   const total = durations.reduce((a, b) => a + b, 0);
   const average = durations.length > 0 ? (total / durations.length).toFixed(1) : "--";
